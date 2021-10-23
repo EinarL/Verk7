@@ -1,0 +1,15 @@
+{
+  "name": "verk7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "dev": "browser-sync start --server --files scripts.js index.html"
+  },
+  "keywords": [],
+  "author": "Einar",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.27.5"
+  }
+}
