@@ -15,24 +15,16 @@ let losses = 0;
 let playerRoundWins = 0;
 let compRoundWins = 0;
 
-
 function isValidBestOf(bestOf) {
   let returnValue = false;
-  if(bestOf % 2 !== 0){
-    if(bestOf < MAX_BEST_OF && bestOf > 0){
-      returnValue = true;
-    }
-    else{
-      console.error("Talan verður að vera minni en 10 og meiri en 0!");
-    }
+  if(bestOf % 2 !== 0 && bestOf < MAX_BEST_OF && bestOf > 0){
+    returnValue = true;
   }
-  else{
-    console.error("Talan verður að vera oddatala!");
+  else if(bestOf !== null){ // ef player ýtti ekki á cancel takkann
+    console.error("Talan verður að vera oddatala, minni en 10 og meiri en 0!");
   }
-
   return returnValue;
 }
-
 
 function checkGame(player, computer, compAutomaticWin, totalGames) {
   let playerAtk;
@@ -45,7 +37,7 @@ function checkGame(player, computer, compAutomaticWin, totalGames) {
     alert("Þú valdir ekki 1,2 né 3, þannig tölvan vann 😔");
   }
   else{
-    if(player == 1){ // ef player veldi skæri
+    if(player == 1){ // ef player valdi skæri
       playerAtk = "skæri";
       if(computer == 2){ // blað
         compAtk = "blað";
@@ -86,7 +78,6 @@ function checkGame(player, computer, compAutomaticWin, totalGames) {
       else{
         compAtk = "stein";
       }
-
     }
     if(playerRoundWins > oldPlayerScore){
       whoWon = ", Þú vannst! 👌";
@@ -97,27 +88,21 @@ function checkGame(player, computer, compAutomaticWin, totalGames) {
     else{
       whoWon = ", það er jafntefli, þannig enginn fékk stig 😐";
     }
-
     alert("Þú valdir " + playerAtk + " og tölvan valdi " + compAtk + whoWon);
   }
   isGameOver(totalGames);
 }
 
-
 function round(totalGames) {
-
   let playerChose = prompt("Veldu Skæri(1), Blað(2), eða Stein(3)!");
 
   if(playerChose !== null){ // ef player ýtti ekki á cancel
     if(playerChose != 1 && playerChose != 2 && playerChose != 3){ // ef player velur ólöglegt gildi
-      console.log("ekki 123");
       checkGame(1,1,true,totalGames);
     }
     else{
       let compChose = Math.floor(Math.random() * 2 + 1);
-      console.log("calls checkgame");
       checkGame(playerChose, compChose, false, totalGames);
-
     }
   }
   else{ // ef player ýtti á cancel
@@ -126,10 +111,7 @@ function round(totalGames) {
   }
 }
 
-
 function isGameOver(totalGames){
-  console.log("compWon: " + compRoundWins + "  playerWon: " + playerRoundWins + "  totalGames:  " + totalGames);
-
   if(compRoundWins === totalGames){ // ef comp er búinn að vinna
     alert("Tölvan vann leikinn. Gengur betur næst! 😣");
     losses++;
@@ -145,37 +127,23 @@ function isGameOver(totalGames){
   else{
     round(totalGames);
   }
-
 }
 
-
 function play() {
-
   let gamesAmount = prompt("'Best af' hverju viltu spila? (það verður að vera oddatala, minni en 10!)");
 
-  let isValid = isValidBestOf(gamesAmount);
-  if(isValid){
+  if(isValidBestOf(gamesAmount)){
     isGameOver(Math.ceil(gamesAmount/2));
   }
 }
 
-
 function games() {
-  winDivLoss = wins/(wins+losses);
-  lossDivWin = losses/(wins+losses);
-  if(Number.isNaN(winDivLoss)){
-    winDivLoss = 0;
-  }
-  else if(!Number.isFinite(winDivLoss)){
-    winDivLoss = 1;
-  }
-  if(Number.isNaN(lossDivWin)){
-    lossDivWin = 0;
-  }
-  else if(!Number.isFinite(lossDivWin)){
-    lossDivWin = 1;
-  }
+  let winDivLoss = wins/(wins+losses);
+  let lossDivWin = losses/(wins+losses);
+
   console.log("Þú hefur spilað " + (wins + losses) + " leiki.");
-  console.log("þú hefur unnið " + wins + ", eða " + (winDivLoss*100).toFixed(2) + "% af heild.");
-  console.log("þú hefur tapað " + losses + ", eða " + (lossDivWin*100).toFixed(2) + "% af heild.");
+  if(wins+losses >= 1){
+    console.log("þú hefur unnið " + wins + ", eða " + (winDivLoss*100).toFixed(2) + "% af heild.");
+    console.log("þú hefur tapað " + losses + ", eða " + (lossDivWin*100).toFixed(2) + "% af heild.");
+  }
 }
